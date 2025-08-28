@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tetris/feature/game/widgets/controllers/game_controller.dart';
+import 'package:tetris/feature/game/game_notifier.dart';
 
 ///keyboard controller to play game
-class KeyboardGameController extends StatefulWidget {
+class KeyboardGameController extends StatelessWidget {
   const KeyboardGameController({
+    required this.gameController,
     required this.child,
     super.key,
   });
 
+  final GameNotifier gameController;
+
   final Widget child;
 
-  @override
-  State<KeyboardGameController> createState() => _KeyboardGameControllerState();
-}
-
-class _KeyboardGameControllerState extends State<KeyboardGameController> {
-  @override
-  void initState() {
-    super.initState();
-    HardwareKeyboard.instance.addHandler(_onKey);
-  }
-
-  bool _onKey(KeyEvent event) {
+  bool _onKey(BuildContext context, KeyEvent event) {
     if (event is KeyDownEvent) {
       final key = event.logicalKey;
-      final game = GameController.of(context);
 
-      if (key == LogicalKeyboardKey.arrowUp) {
-        game.rotate();
-      } else if (key == LogicalKeyboardKey.arrowDown) {
-        game.down();
-      } else if (key == LogicalKeyboardKey.arrowLeft) {
-        game.left();
-      } else if (key == LogicalKeyboardKey.arrowRight) {
-        game.right();
-      } else if (key == LogicalKeyboardKey.space) {
-        game.drop();
+      if (key == LogicalKeyboardKey.arrowUp ||
+          key == LogicalKeyboardKey.digit2 ||
+          key == LogicalKeyboardKey.numpad2) {
+        gameController.rotate();
+      } else if (key == LogicalKeyboardKey.arrowDown ||
+          key == LogicalKeyboardKey.digit8 ||
+          key == LogicalKeyboardKey.numpad8) {
+        gameController.down();
+      } else if (key == LogicalKeyboardKey.arrowLeft ||
+          key == LogicalKeyboardKey.digit4 ||
+          key == LogicalKeyboardKey.numpad4) {
+        gameController.left();
+      } else if (key == LogicalKeyboardKey.arrowRight ||
+          key == LogicalKeyboardKey.digit6 ||
+          key == LogicalKeyboardKey.numpad6) {
+        gameController.right();
+      } else if (key == LogicalKeyboardKey.space ||
+          key == LogicalKeyboardKey.enter ||
+          key == LogicalKeyboardKey.numpadEnter) {
+        gameController.drop();
       } else {
         return false;
       }
@@ -46,11 +47,10 @@ class _KeyboardGameControllerState extends State<KeyboardGameController> {
   }
 
   @override
-  void dispose() {
-    HardwareKeyboard.instance.removeHandler(_onKey);
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => widget.child;
+  Widget build(BuildContext context) => KeyboardListener(
+        autofocus: true,
+        focusNode: FocusNode(),
+        onKeyEvent: (event) => _onKey(context, event),
+        child: child,
+      );
 }

@@ -1,45 +1,75 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tetris/feature/game/core/ui/brick.dart';
-import 'package:tetris/feature/game/widgets/controllers/game_controller.dart';
+import 'package:tetris/feature/game/game_notifier.dart';
+import 'package:tetris/feature/game/widgets/controllers/sensor_controller.dart';
 import 'package:tetris/feature/game/widgets/grid.dart';
 import 'package:tetris/feature/game/widgets/status_bar.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({
-    required this.width,
+    required this.gameController,
     super.key,
   });
 
-  final double width;
+  final GameNotifier gameController;
+
+  double _getGridSizeMultiplier(MediaQueryData mediaQuery) {
+    final isLandscape = mediaQuery.size.width > mediaQuery.size.height;
+    final shortestSide = mediaQuery.size.shortestSide;
+
+    // Определяем планшет по размеру экрана
+    if (shortestSide >= 600) {
+      // Планшеты: меньший размер для portrait, чтобы сетка вместилась
+      return isLandscape ? 0.25 : 0.45;
+    }
+
+    // Телефоны: стандартные размеры
+    return isLandscape ? 0.25 : 0.6;
+  }
 
   @override
-  Widget build(BuildContext context) {
-    final playerPanelWidth = width * 0.8;
-    return _ScreenShaker(
-      shake: GameControllerState.of(context).states == GameStates.drop,
-      child: SizedBox(
-        height: (playerPanelWidth - 6) * 2 + 6,
-        width: width,
-        child: ColoredBox(
-          color: const Color(0xff9ead86),
-          child: BrickSizeProvider(
-            size: getBrikSizeForScreenWidth(playerPanelWidth),
-            child: Row(
-              children: <Widget>[
-                GameGrid(width: playerPanelWidth),
-                SizedBox(
-                  width: width - playerPanelWidth,
-                  child: const GameStatusBar(),
-                ),
-              ],
-            ),
+  Widget build(BuildContext context) => ListenableBuilder(
+        listenable: gameController,
+        builder: (context, child) => _ScreenShaker(
+          shake: gameController.states == GameStates.drop,
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final Size gridSize = Size.square(
+                constraints.maxWidth *
+                    _getGridSizeMultiplier(MediaQuery.of(context)) /
+                    gameController.gameFieldWidth,
+              );
+
+              return Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          GameGrid(
+                            gameController: gameController,
+                            size: gridSize,
+                          ),
+                          if (gameController.states == GameStates.none)
+                            _PauseButton(gameController: gameController),
+                        ],
+                      ),
+                      GameStatusBar(gameController: gameController),
+                    ],
+                  ),
+                  // add controller if you do not have a keyboard.
+                  if (Platform.isIOS || Platform.isAndroid)
+                    SensorGameController(gameController: gameController),
+                ],
+              );
+            },
           ),
         ),
-      ),
-    );
-  }
+      );
 }
 
 class _ScreenShaker extends StatefulWidget {
@@ -47,6 +77,7 @@ class _ScreenShaker extends StatefulWidget {
     required this.child,
     required this.shake,
   });
+
   final Widget child;
 
   final bool shake;
@@ -64,9 +95,7 @@ class _ScreenShakerState extends State<_ScreenShaker>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 150),
-    )..addListener(() {
-        setState(() {});
-      });
+    )..addListener(() => setState(() {}));
     super.initState();
   }
 
@@ -93,5 +122,66 @@ class _ScreenShakerState extends State<_ScreenShaker>
   Widget build(BuildContext context) => Transform.translate(
         offset: Offset(0, _getOffset()),
         child: widget.child,
+      );
+}
+
+class _PauseButton extends StatefulWidget {
+  const _PauseButton({
+    required this.gameController,
+  });
+
+  final GameNotifier gameController;
+
+  @override
+  State<_PauseButton> createState() => _PauseButtonState();
+}
+
+class _PauseButtonState extends State<_PauseButton> {
+  bool _hasBeenTapped = false;
+
+  @override
+  Widget build(BuildContext context) => GestureDetector(
+        onTap: () {
+          if (!_hasBeenTapped) {
+            _hasBeenTapped = true;
+            widget.gameController.drop();
+          }
+        },
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 150),
+          curve: Curves.easeInOut,
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF4A90E2),
+                Color(0xFF357ABD),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: const Color(0xFF4A90E2).withValues(alpha: 0.3),
+                blurRadius: 12,
+                spreadRadius: 2,
+                offset: const Offset(0, 4),
+              ),
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.1),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: const Icon(
+            Icons.pause_rounded,
+            color: Colors.white,
+            fill: 1,
+            size: 40,
+          ),
+        ),
       );
 }
