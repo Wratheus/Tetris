@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:window_manager/window_manager.dart';
 import 'package:tetris/feature/game/game_notifier.dart';
 import 'package:tetris/feature/game/widgets/controllers/keyboard_controller.dart';
 import 'package:tetris/feature/game/widgets/screen.dart';
@@ -17,6 +19,32 @@ class _GameMainState extends State<GameMain> {
   void initState() {
     super.initState();
     _gameController = GameNotifier();
+
+    // Устанавливаем фиксированный размер окна для десктопа
+    if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+      _setFixedWindowSize();
+    }
+  }
+
+  Future<void> _setFixedWindowSize() async {
+    try {
+      // Инициализируем window_manager
+      await windowManager.ensureInitialized();
+
+      // Устанавливаем фиксированный размер окна
+      await windowManager.setSize(const Size(500, 700));
+
+      // Запрещаем изменение размера окна
+      await windowManager.setResizable(false);
+
+      // Центрируем окно
+      await windowManager.center();
+
+      // Устанавливаем заголовок окна
+      await windowManager.setTitle('Tetris');
+    } on Object catch (e) {
+      debugPrint('Window manager not available: $e');
+    }
   }
 
   @override

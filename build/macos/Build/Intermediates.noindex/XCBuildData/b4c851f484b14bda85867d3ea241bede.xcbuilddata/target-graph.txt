@@ -1,0 +1,18 @@
+Target dependency graph (6 targets)
+Target 'Runner' in project 'Runner'
+➜ Explicit dependency on target 'Flutter Assemble' in project 'Runner'
+➜ Implicit dependency on target 'Pods-Runner' in project 'Pods' via file 'Pods_Runner.framework' in build phase 'Link Binary'
+➜ Implicit dependency on target 'screen_retriever' in project 'Pods' via options '-framework screen_retriever' in build setting 'OTHER_LDFLAGS'
+➜ Implicit dependency on target 'window_manager' in project 'Pods' via options '-framework window_manager' in build setting 'OTHER_LDFLAGS'
+Target 'Pods-Runner' in project 'Pods'
+➜ Explicit dependency on target 'FlutterMacOS' in project 'Pods'
+➜ Explicit dependency on target 'screen_retriever' in project 'Pods'
+➜ Explicit dependency on target 'window_manager' in project 'Pods'
+Target 'Flutter Assemble' in project 'Runner'
+➜ Implicit dependency on target 'screen_retriever' in project 'Pods' via options '-framework screen_retriever' in build setting 'OTHER_LDFLAGS'
+➜ Implicit dependency on target 'window_manager' in project 'Pods' via options '-framework window_manager' in build setting 'OTHER_LDFLAGS'
+Target 'window_manager' in project 'Pods'
+➜ Explicit dependency on target 'FlutterMacOS' in project 'Pods'
+Target 'screen_retriever' in project 'Pods'
+➜ Explicit dependency on target 'FlutterMacOS' in project 'Pods'
+Target 'FlutterMacOS' in project 'Pods' (no dependencies)

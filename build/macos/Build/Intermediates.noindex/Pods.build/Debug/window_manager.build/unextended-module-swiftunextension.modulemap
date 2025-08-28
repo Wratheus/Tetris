@@ -1,0 +1,4 @@
+
+module window_manager.__Swift {
+  exclude header "window_manager-Swift.h"
+}

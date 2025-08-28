@@ -1,0 +1,5 @@
+
+module screen_retriever.Swift {
+  header "screen_retriever-Swift.h"
+  requires objc
+}
