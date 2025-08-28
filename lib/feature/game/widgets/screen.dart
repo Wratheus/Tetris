@@ -44,9 +44,10 @@ class GameScreen extends StatelessWidget {
               );
 
               return Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Stack(
                         alignment: Alignment.center,
