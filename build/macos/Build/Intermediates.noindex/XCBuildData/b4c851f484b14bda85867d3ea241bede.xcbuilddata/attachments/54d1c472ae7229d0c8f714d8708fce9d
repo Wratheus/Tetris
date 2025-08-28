@@ -1,4 +1,0 @@
-
-module screen_retriever.__Swift {
-  exclude header "screen_retriever-Swift.h"
-}

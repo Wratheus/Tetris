@@ -1,5 +1,0 @@
-
-module window_manager.Swift {
-  header "window_manager-Swift.h"
-  requires objc
-}
