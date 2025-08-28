@@ -7,6 +7,9 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const MaterialApp(home: Scaffold(body: GameMain()));
+  Widget build(BuildContext context) => MaterialApp(
+        home: const Scaffold(body: GameMain()),
+        theme: ThemeData.dark(useMaterial3: true),
+        debugShowCheckedModeBanner: false,
+      );
 }

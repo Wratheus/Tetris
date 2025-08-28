@@ -56,17 +56,24 @@ class TetrominoBrick extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox.fromSize(
         size: size,
         child: Container(
+          margin: EdgeInsets.all(size.width * 0.05),
           decoration: BoxDecoration(
             color: identica.iconBackgroundColor,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(size.width * 0.3),
+            boxShadow: [
+              BoxShadow(
+                color: identica.iconBackgroundColor.withValues(alpha: 0.4),
+                blurRadius: size.width * 0.2,
+                spreadRadius: size.width * 0.05,
+                offset: Offset(0, size.width * 0.05),
+              ),
+            ],
           ),
-          width: size.width,
-          height: size.width,
           child: Center(
             child: Icon(
               identica.icon,
               color: identica.iconColor,
-              size: 5,
+              size: size.width * 0.6,
               fill: identica.fill,
             ),
           ),
@@ -90,27 +97,43 @@ class TetrominoBrickHighlight extends StatelessWidget {
         child: Stack(
           children: [
             Container(
+              margin: EdgeInsets.all(size.width * 0.05),
               decoration: BoxDecoration(
                 color: identica.iconBackgroundColor,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(size.width * 0.3),
+                boxShadow: [
+                  BoxShadow(
+                    color: identica.iconBackgroundColor.withValues(alpha: 0.4),
+                    blurRadius: size.width * 0.2,
+                    spreadRadius: size.width * 0.05,
+                    offset: Offset(0, size.width * 0.05),
+                  ),
+                ],
               ),
-              width: size.width,
-              height: size.width,
               child: Center(
                 child: Icon(
                   identica.icon,
                   color: identica.iconColor,
-                  size: 5,
+                  size: size.width * 0.6,
                   fill: identica.fill,
                 ),
               ),
             ),
             Container(
+              margin: EdgeInsets.all(size.width * 0.05),
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(size.width * 0.3),
                 border: Border.all(
-                  width: size.width,
-                  color: Colors.red.withValues(alpha: 0.2),
+                  width: size.width * 0.1,
+                  color: Colors.red.withValues(alpha: 0.6),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.red.withValues(alpha: 0.3),
+                    blurRadius: size.width * 0.15,
+                    spreadRadius: size.width * 0.05,
+                  ),
+                ],
               ),
             ),
           ],

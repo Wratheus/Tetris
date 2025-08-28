@@ -21,21 +21,16 @@ class _GameMainState extends State<GameMain> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.of(context).pop(),
-            focusNode: FocusNode(skipTraversal: true),
+        body: SafeArea(
+          minimum: const EdgeInsets.only(
+            top: kToolbarHeight,
           ),
-          toolbarHeight: 56,
-          backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
-          elevation: 0,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 5),
-          child: KeyboardGameController(
-            gameController: _gameController,
-            child: GameScreen(gameController: _gameController),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: KeyboardGameController(
+              gameController: _gameController,
+              child: GameScreen(gameController: _gameController),
+            ),
           ),
         ),
       );
