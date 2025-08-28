@@ -23,7 +23,7 @@ class GameScreen extends StatelessWidget {
     // Определяем планшет по размеру экрана
     if (shortestSide >= 600) {
       // Планшеты: меньший размер для portrait, чтобы сетка вместилась
-      return isLandscape ? 0.25 : 0.45;
+      return isLandscape ? 0.3 : 0.5;
     }
 
     // Телефоны: стандартные размеры
@@ -58,7 +58,8 @@ class GameScreen extends StatelessWidget {
                           if (gameController.states == GameStates.none ||
                               gameController.states == GameStates.paused)
                             _PauseIndicationOverlay(
-                                gameController: gameController),
+                              gameController: gameController,
+                            ),
                         ],
                       ),
                       Column(

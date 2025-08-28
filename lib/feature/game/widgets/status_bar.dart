@@ -53,28 +53,32 @@ class GameStatusBar extends StatelessWidget {
               color: Colors.blue,
             ),
             if (gameController.cachedNextTetromino != null)
-              Column(
-                spacing: 12,
-                children: [
-                  const Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        Icons.next_plan,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                      SizedBox(width: 4),
-                      Text(
-                        'Next',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ],
-                  ),
-                  _NextTetromino(
-                    nextTetromino: gameController.cachedNextTetromino!,
-                  ),
-                ],
+              SizedBox(
+                width: 120,
+                height: 120,
+                child: Column(
+                  spacing: 12,
+                  children: [
+                    const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.next_plan,
+                          size: 16,
+                          color: Colors.white,
+                        ),
+                        SizedBox(width: 4),
+                        Text(
+                          'Next',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
+                    ),
+                    _NextTetromino(
+                      nextTetromino: gameController.cachedNextTetromino!,
+                    ),
+                  ],
+                ),
               ),
           ],
         ),

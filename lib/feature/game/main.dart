@@ -33,7 +33,7 @@ class _GameMainState extends State<GameMain> {
       await windowManager.ensureInitialized();
 
       // Устанавливаем фиксированный размер окна
-      await windowManager.setSize(const Size(600, 700));
+      await windowManager.setSize(const Size(600, 740));
 
       // Запрещаем изменение размера окна
       await windowManager.setResizable(false);
@@ -54,12 +54,9 @@ class _GameMainState extends State<GameMain> {
           minimum: const EdgeInsets.only(
             top: kToolbarHeight,
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: KeyboardGameController(
-              gameController: _gameController,
-              child: GameScreen(gameController: _gameController),
-            ),
+          child: KeyboardGameController(
+            gameController: _gameController,
+            child: GameScreen(gameController: _gameController),
           ),
         ),
       );
