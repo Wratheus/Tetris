@@ -1,9 +1,10 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:window_manager/window_manager.dart';
 import 'package:tetris/feature/game/game_notifier.dart';
 import 'package:tetris/feature/game/widgets/controllers/keyboard_controller.dart';
 import 'package:tetris/feature/game/widgets/screen.dart';
+import 'package:window_manager/window_manager.dart';
 
 class GameMain extends StatefulWidget {
   const GameMain({super.key});

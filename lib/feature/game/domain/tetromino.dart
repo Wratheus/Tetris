@@ -227,19 +227,15 @@ class Tetromino {
       case 0: // Исходная форма
         rotatedX = x0;
         rotatedY = y0;
-        break;
       case 1: // Поворот на 90° по часовой стрелке
         rotatedX = y0;
         rotatedY = type.shape.length - 1 - x0;
-        break;
       case 2: // Поворот на 180°
         rotatedX = type.shape[0].length - 1 - x0;
         rotatedY = type.shape.length - 1 - y0;
-        break;
       case 3: // Поворот на 270° по часовой стрелке
         rotatedX = type.shape[0].length - 1 - y0;
         rotatedY = x0;
-        break;
     }
 
     // Проверяем границы после поворота

@@ -87,7 +87,10 @@ class SensorGameController extends StatelessWidget {
 
   /// Возвращает размер кнопки в зависимости от типа устройства
   Size _getButtonSize(
-      _DeviceType deviceType, MediaQueryData mediaQuery, bool isLandscape) {
+    _DeviceType deviceType,
+    MediaQueryData mediaQuery,
+    bool isLandscape,
+  ) {
     final baseSize = mediaQuery.size.width;
 
     return switch (deviceType) {

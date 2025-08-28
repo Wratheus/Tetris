@@ -161,52 +161,53 @@ class _GridBackgroundPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     // Верхний левый угол
-    canvas..drawLine(
-      Offset.zero,
-      Offset(cellWidth * 0.4, 0),
-      cornerPaint,
-    )
-    ..drawLine(
-      Offset.zero,
-      Offset(0, cellHeight * 0.4),
-      cornerPaint,
-    )
+    canvas
+      ..drawLine(
+        Offset.zero,
+        Offset(cellWidth * 0.4, 0),
+        cornerPaint,
+      )
+      ..drawLine(
+        Offset.zero,
+        Offset(0, cellHeight * 0.4),
+        cornerPaint,
+      )
 
-    // Верхний правый угол
-    ..drawLine(
-      Offset(size.width, 0),
-      Offset(size.width - cellWidth * 0.4, 0),
-      cornerPaint,
-    )
-    ..drawLine(
-      Offset(size.width, 0),
-      Offset(size.width, cellHeight * 0.4),
-      cornerPaint,
-    )
+      // Верхний правый угол
+      ..drawLine(
+        Offset(size.width, 0),
+        Offset(size.width - cellWidth * 0.4, 0),
+        cornerPaint,
+      )
+      ..drawLine(
+        Offset(size.width, 0),
+        Offset(size.width, cellHeight * 0.4),
+        cornerPaint,
+      )
 
-    // Нижний левый угол
-    ..drawLine(
-      Offset(0, size.height),
-      Offset(cellWidth * 0.4, size.height),
-      cornerPaint,
-    )
-    ..drawLine(
-      Offset(0, size.height),
-      Offset(0, size.height - cellHeight * 0.4),
-      cornerPaint,
-    )
+      // Нижний левый угол
+      ..drawLine(
+        Offset(0, size.height),
+        Offset(cellWidth * 0.4, size.height),
+        cornerPaint,
+      )
+      ..drawLine(
+        Offset(0, size.height),
+        Offset(0, size.height - cellHeight * 0.4),
+        cornerPaint,
+      )
 
-    // Нижний правый угол
-    ..drawLine(
-      Offset(size.width, size.height),
-      Offset(size.width - cellWidth * 0.4, size.height),
-      cornerPaint,
-    )
-    ..drawLine(
-      Offset(size.width, size.height),
-      Offset(size.width, size.height - cellHeight * 0.4),
-      cornerPaint,
-    );
+      // Нижний правый угол
+      ..drawLine(
+        Offset(size.width, size.height),
+        Offset(size.width - cellWidth * 0.4, size.height),
+        cornerPaint,
+      )
+      ..drawLine(
+        Offset(size.width, size.height),
+        Offset(size.width, size.height - cellHeight * 0.4),
+        cornerPaint,
+      );
   }
 
   @override
