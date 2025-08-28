@@ -28,7 +28,7 @@ jobs:
       - name: Install Flutter
         shell: bash
         run: |
-          git clone https://github.com/flutter/flutter.git --branch 3.32.8 --depth 1 $HOME/flutter
+          git clone https://github.com/flutter/flutter.git --branch 3.35.1 --depth 1 $HOME/flutter
           echo "$HOME/flutter/bin" >> $GITHUB_PATH
 
       - name: Check Flutter version
@@ -111,5 +111,6 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: artifacts/*
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
