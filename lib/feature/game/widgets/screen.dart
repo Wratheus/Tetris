@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:tetris/feature/game/game_notifier.dart';
 import 'package:tetris/feature/game/widgets/controllers/sensor_controller.dart';
+import 'package:tetris/feature/game/widgets/controls_help.dart';
 import 'package:tetris/feature/game/widgets/grid.dart';
 import 'package:tetris/feature/game/widgets/status_bar.dart';
 import 'package:tetris/feature/game/widgets/toggle_pause_button.dart';
@@ -67,6 +68,7 @@ class GameScreen extends StatelessWidget {
                         spacing: 20,
                         children: [
                           GameStatusBar(gameController: gameController),
+                          const KeyboardLegend(),
                           TogglePauseButton(gameController: gameController),
                         ],
                       ),
