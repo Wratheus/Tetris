@@ -6,6 +6,7 @@ import 'package:tetris/feature/game/game_notifier.dart';
 import 'package:tetris/feature/game/widgets/controllers/sensor_controller.dart';
 import 'package:tetris/feature/game/widgets/grid.dart';
 import 'package:tetris/feature/game/widgets/status_bar.dart';
+import 'package:tetris/feature/game/widgets/toggle_pause_button.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({
@@ -54,11 +55,19 @@ class GameScreen extends StatelessWidget {
                             gameController: gameController,
                             size: gridSize,
                           ),
-                          if (gameController.states == GameStates.none)
-                            _PauseButton(gameController: gameController),
+                          if (gameController.states == GameStates.none ||
+                              gameController.states == GameStates.paused)
+                            _PauseIndicationOverlay(
+                                gameController: gameController),
                         ],
                       ),
-                      GameStatusBar(gameController: gameController),
+                      Column(
+                        spacing: 20,
+                        children: [
+                          GameStatusBar(gameController: gameController),
+                          TogglePauseButton(gameController: gameController),
+                        ],
+                      ),
                     ],
                   ),
                   // add controller if you do not have a keyboard.
@@ -125,18 +134,19 @@ class _ScreenShakerState extends State<_ScreenShaker>
       );
 }
 
-class _PauseButton extends StatefulWidget {
-  const _PauseButton({
+class _PauseIndicationOverlay extends StatefulWidget {
+  const _PauseIndicationOverlay({
     required this.gameController,
   });
 
   final GameNotifier gameController;
 
   @override
-  State<_PauseButton> createState() => _PauseButtonState();
+  State<_PauseIndicationOverlay> createState() =>
+      _PauseIndicationOverlayState();
 }
 
-class _PauseButtonState extends State<_PauseButton> {
+class _PauseIndicationOverlayState extends State<_PauseIndicationOverlay> {
   bool _hasBeenTapped = false;
 
   @override
@@ -157,8 +167,8 @@ class _PauseButtonState extends State<_PauseButton> {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                Color(0xFF4A90E2),
-                Color(0xFF357ABD),
+                Color(0xFFFF9800),
+                Color(0xFFF57C00),
               ],
             ),
             borderRadius: BorderRadius.circular(16),

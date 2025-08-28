@@ -33,7 +33,7 @@ class _GameMainState extends State<GameMain> {
       await windowManager.ensureInitialized();
 
       // Устанавливаем фиксированный размер окна
-      await windowManager.setSize(const Size(500, 700));
+      await windowManager.setSize(const Size(600, 700));
 
       // Запрещаем изменение размера окна
       await windowManager.setResizable(false);

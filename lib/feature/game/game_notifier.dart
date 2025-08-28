@@ -7,6 +7,7 @@ import 'package:tetris/feature/game/domain/tetromino.dart';
 enum GameStates {
   none,
   running,
+  paused,
   reset,
   mixing,
   clear,
@@ -85,6 +86,21 @@ class GameNotifier extends ChangeNotifier {
 
   GameStates get states => _states;
 
+  void _pause() {
+    if (_states == GameStates.running) {
+      _states = GameStates.paused;
+    }
+    notifyListeners();
+  }
+
+  void togglePause() {
+    if (_states == GameStates.running) {
+      _pause();
+    } else if (_states == GameStates.paused || _states == GameStates.none) {
+      _startGame();
+    }
+  }
+
   void rotate() {
     if (_states == GameStates.running) {
       final Tetromino? next = _current?.rotate();
@@ -153,8 +169,8 @@ class GameNotifier extends ChangeNotifier {
         }
       }
       notifyListeners();
-    } else if (_states == GameStates.none) {
-      _initializeNextTetromino(); // Инициализируем следующий тетромино при первом запуске
+    } else if (_states == GameStates.none || _states == GameStates.paused) {
+      _initializeNextTetromino();
       _startGame();
     }
   }

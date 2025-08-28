@@ -22,17 +22,17 @@ class KeyboardGameController extends StatefulWidget {
 
 class _KeyboardGameControllerState extends State<KeyboardGameController> {
   final FocusNode _focusNode = FocusNode();
-  
+
   // Таймеры для зажатия клавиш
   Timer? _leftTimer;
   Timer? _rightTimer;
   Timer? _downTimer;
-  
+
   // Флаги для отслеживания зажатых клавиш
   bool _isLeftPressed = false;
   bool _isRightPressed = false;
   bool _isDownPressed = false;
-  
+
   // Задержка перед началом повторения
   static const Duration _initialDelay = Duration(milliseconds: 200);
   // Интервал повторения
@@ -149,11 +149,14 @@ class _KeyboardGameControllerState extends State<KeyboardGameController> {
           key == LogicalKeyboardKey.numpadEnter) {
         widget.gameController.drop();
         return true;
+      } else if (key == LogicalKeyboardKey.keyP) {
+        widget.gameController.togglePause();
+        return true;
       }
       return false;
     } else if (event is KeyUpEvent) {
       final key = event.logicalKey;
-      
+
       // Обрабатываем отпускание клавиш
       if (key == LogicalKeyboardKey.arrowDown ||
           key == LogicalKeyboardKey.digit8 ||
