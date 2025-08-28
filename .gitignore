@@ -1,3 +1,75 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.metadata
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
 
-# FVM Version Cache
+
+# Flutter/Dart/Pub related
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Web related
+lib/generated_plugin_registrant.dart
+pubspec.lock
+
+# Android Studio will place build artifacts here
+android/app/debug
+android/app/profile
+android/app/release
+android/app/.cxx/
+android/.kotlin/
+android/build/
+pubspec.lock
+
+# custom
+*.freezed.dart
+*.g.dart
+*.env
+env.g.dart
+
+# Package build files
+packages/*/build/
+packages/*/ios/build/
+packages/*/android/build/
+packages/*/macos/build/
+packages/*/windows/build/
+packages/*/linux/build/
+packages/*/web/build/
+
+# Xcode build cache files
+**/XCBuildData/
+**/PIFCache/
+**/*.xcuserdata/
+**/*.xcworkspace/xcuserdata/
+**/*.xcodeproj/xcuserdata/
+**/*.xcodeproj/project.xcworkspace/xcuserdata/
+
+# IDE Settings
+## cursor and vscode
+.cursor/
+.vscode/
+## IntelliJ related
+.android_studio/
+*.iml
+*.ipr
+*.iws
+.idea/
+
+## FVM settings
 .fvm/
