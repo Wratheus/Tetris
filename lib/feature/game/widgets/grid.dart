@@ -17,36 +17,43 @@ class GameGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentTetromino = gameController.currentTetromino;
 
-    return DecoratedBox(
+    return Container(
       decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.3),
         border: Border.all(
-          color: Colors.white.withValues(alpha: 0.3),
+          color: Colors.white.withValues(alpha: 0.4),
           width: 2,
         ),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.2),
+            color: Colors.black.withValues(alpha: 0.3),
             blurRadius: 8,
-            spreadRadius: 2,
+            spreadRadius: 1,
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(12),
         child: Stack(
           children: [
+            // Простой фоновый цвет
+            Positioned.fill(
+              child: Container(
+                color: Colors.blue.withValues(alpha: 0.02),
+              ),
+            ),
+            // Улучшенная сетка
             Positioned.fill(
               child: CustomPaint(
                 painter: _GridBackgroundPainter(
-                  color: Colors.white.withValues(alpha: 0.1),
                   rows: gameController.gameFieldHeight,
                   cols: gameController.gameFieldWidth,
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(3),
               child: Column(
                 children: List.generate(gameController.gameFieldHeight, (i) {
                   final row = gameController.calculateMixed()[i];
@@ -103,24 +110,27 @@ class GameGrid extends StatelessWidget {
 
 class _GridBackgroundPainter extends CustomPainter {
   _GridBackgroundPainter({
-    required this.color,
     required this.rows,
     required this.cols,
   });
 
-  final Color color;
   final int rows;
   final int cols;
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = color
-      ..strokeWidth = 0.5;
+    final cellWidth = size.width / cols;
+    final cellHeight = size.height / rows;
 
-    // Вертикальные линии
+    // Рисуем вертикальные линии
     for (int i = 1; i < cols; i++) {
-      final x = (size.width / cols) * i;
+      final x = cellWidth * i;
+
+      final paint = Paint()
+        ..color = Colors.white.withValues(alpha: 0.12)
+        ..strokeWidth = 1.0
+        ..strokeCap = StrokeCap.round;
+
       canvas.drawLine(
         Offset(x, 0),
         Offset(x, size.height),
@@ -128,15 +138,75 @@ class _GridBackgroundPainter extends CustomPainter {
       );
     }
 
-    // Горизонтальные линии
+    // Рисуем горизонтальные линии
     for (int i = 1; i < rows; i++) {
-      final y = (size.height / rows) * i;
+      final y = cellHeight * i;
+
+      final paint = Paint()
+        ..color = Colors.white.withValues(alpha: 0.12)
+        ..strokeWidth = 1.0
+        ..strokeCap = StrokeCap.round;
+
       canvas.drawLine(
         Offset(0, y),
         Offset(size.width, y),
         paint,
       );
     }
+
+    // Добавляем тонкие угловые линии для стиля
+    final cornerPaint = Paint()
+      ..color = Colors.cyan.withValues(alpha: 0.15)
+      ..strokeWidth = 1.5
+      ..strokeCap = StrokeCap.round;
+
+    // Верхний левый угол
+    canvas.drawLine(
+      Offset(0, 0),
+      Offset(cellWidth * 0.4, 0),
+      cornerPaint,
+    );
+    canvas.drawLine(
+      Offset(0, 0),
+      Offset(0, cellHeight * 0.4),
+      cornerPaint,
+    );
+
+    // Верхний правый угол
+    canvas.drawLine(
+      Offset(size.width, 0),
+      Offset(size.width - cellWidth * 0.4, 0),
+      cornerPaint,
+    );
+    canvas.drawLine(
+      Offset(size.width, 0),
+      Offset(size.width, cellHeight * 0.4),
+      cornerPaint,
+    );
+
+    // Нижний левый угол
+    canvas.drawLine(
+      Offset(0, size.height),
+      Offset(cellWidth * 0.4, size.height),
+      cornerPaint,
+    );
+    canvas.drawLine(
+      Offset(0, size.height),
+      Offset(0, size.height - cellHeight * 0.4),
+      cornerPaint,
+    );
+
+    // Нижний правый угол
+    canvas.drawLine(
+      Offset(size.width, size.height),
+      Offset(size.width - cellWidth * 0.4, size.height),
+      cornerPaint,
+    );
+    canvas.drawLine(
+      Offset(size.width, size.height),
+      Offset(size.width, size.height - cellHeight * 0.4),
+      cornerPaint,
+    );
   }
 
   @override

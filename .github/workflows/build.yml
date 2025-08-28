@@ -1,0 +1,117 @@
+name: Build Flutter Tetris
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            flutter-target: windows
+          - os: ubuntu-latest
+            flutter-target: linux
+          - os: macos-latest
+            flutter-target: macos
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      # ✅ Устанавливаем Flutter одинаково для всех OS
+      - name: Install Flutter
+        shell: bash
+        run: |
+          git clone https://github.com/flutter/flutter.git --branch 3.32.8 --depth 1 $HOME/flutter
+          echo "$HOME/flutter/bin" >> $GITHUB_PATH
+
+      # ✅ Проверка, что Flutter доступен
+      - name: Check Flutter version
+        run: flutter --version
+        shell: bash
+
+      - name: Enable desktop
+        run: flutter config --enable-${{ matrix.flutter-target }}-desktop
+        shell: bash
+
+      - name: Get dependencies
+        run: flutter pub get
+        shell: bash
+
+      - name: Precache Flutter macOS artifacts
+        if: matrix.flutter-target == 'macos'
+        run: flutter precache --macos
+        shell: bash
+
+      - name: Install CocoaPods dependencies
+        if: matrix.flutter-target == 'macos'
+        run: |
+          cd macos
+          pod install --repo-update
+        shell: bash
+
+      - name: Install Linux dependencies
+        if: matrix.flutter-target == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config libgtk-3-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+            gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+            gstreamer1.0-alsa gstreamer1.0-pulseaudio
+        shell: bash
+
+      - name: Build app
+        shell: bash
+        run: |
+          if [[ "${{ matrix.flutter-target }}" == "windows" ]]; then
+            flutter build windows --release
+          elif [[ "${{ matrix.flutter-target }}" == "linux" ]]; then
+            flutter build linux --release
+          else
+            flutter build macos --release
+          fi
+
+      - name: Create artifacts directory
+        run: mkdir artifacts
+        shell: bash
+
+      - name: Archive build (Windows)
+        if: matrix.flutter-target == 'windows'
+        shell: pwsh
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Compress-Archive -Path build/windows/x64/runner/Release/* -DestinationPath artifacts/tetris-windows-$tag.zip
+
+      - name: Archive build (Linux)
+        if: matrix.flutter-target == 'linux'
+        run: |
+          tar -czvf artifacts/tetris-linux-${{ github.ref_name }}.tar.gz -C build/linux/x64/release/bundle .
+        shell: bash
+
+      - name: Archive build (macOS)
+        if: matrix.flutter-target == 'macos'
+        run: |
+          tar -czvf artifacts/tetris-macos-${{ github.ref_name }}.tar.gz -C build/macos/Build/Products/Release Tetris.app
+        shell: bash
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-build
+          path: artifacts/*
+
+      - name: Upload to GitHub Releases
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
