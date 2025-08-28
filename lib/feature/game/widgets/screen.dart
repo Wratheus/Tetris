@@ -21,14 +21,10 @@ class GameScreen extends StatelessWidget {
     final isLandscape = mediaQuery.size.width > mediaQuery.size.height;
     final shortestSide = mediaQuery.size.shortestSide;
 
-    // Определяем планшет по размеру экрана
     if (shortestSide >= 600) {
-      // Планшеты: меньший размер для portrait, чтобы сетка вместилась
-      return isLandscape ? 0.3 : 0.5;
+      return isLandscape ? 0.3 : 0.45;
     }
-
-    // Телефоны: стандартные размеры
-    return isLandscape ? 0.25 : 0.6;
+    return isLandscape ? 0.25 : 0.55;
   }
 
   @override

@@ -29,14 +29,13 @@ class _GameMainState extends State<GameMain> {
 
   Future<void> _setFixedWindowSize() async {
     try {
-      // Инициализируем window_manager
       await windowManager.ensureInitialized();
 
-      // Устанавливаем фиксированный размер окна
       await windowManager.setSize(const Size(600, 740));
 
-      // Запрещаем изменение размера окна
-      await windowManager.setResizable(false);
+      await windowManager.setResizable(true);
+
+      await windowManager.setMinimumSize(const Size(600, 740));
 
       // Центрируем окно
       await windowManager.center();
