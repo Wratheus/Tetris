@@ -52,34 +52,35 @@ class GameStatusBar extends StatelessWidget {
               icon: Icons.trending_up,
               color: Colors.blue,
             ),
-            if (gameController.cachedNextTetromino != null)
-              SizedBox(
-                width: 120,
-                height: 120,
-                child: Column(
-                  spacing: 12,
-                  children: [
-                    const Row(
-                      mainAxisSize: MainAxisSize.min,
+            SizedBox(
+              width: 120,
+              height: 120,
+              child: gameController.cachedNextTetromino != null
+                  ? Column(
+                      spacing: 12,
                       children: [
-                        Icon(
-                          Icons.next_plan,
-                          size: 16,
-                          color: Colors.white,
+                        const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.next_plan,
+                              size: 16,
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 4),
+                            Text(
+                              'Next',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 4),
-                        Text(
-                          'Next',
-                          style: TextStyle(color: Colors.white),
+                        _NextTetromino(
+                          nextTetromino: gameController.cachedNextTetromino!,
                         ),
                       ],
-                    ),
-                    _NextTetromino(
-                      nextTetromino: gameController.cachedNextTetromino!,
-                    ),
-                  ],
-                ),
-              ),
+                    )
+                  : const SizedBox.shrink(),
+            ),
           ],
         ),
       );
