@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:async';
 import 'package:tetris/feature/game/game_notifier.dart';
 
 ///keyboard controller to play game with key hold support
