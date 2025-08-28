@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:tetris/feature/game/game_notifier.dart';
 
 ///keyboard controller to play game
-class KeyboardGameController extends StatelessWidget {
+class KeyboardGameController extends StatefulWidget {
   const KeyboardGameController({
     required this.gameController,
     required this.child,
@@ -14,6 +14,19 @@ class KeyboardGameController extends StatelessWidget {
 
   final Widget child;
 
+  @override
+  State<KeyboardGameController> createState() => _KeyboardGameControllerState();
+}
+
+class _KeyboardGameControllerState extends State<KeyboardGameController> {
+  final FocusNode _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
   bool _onKey(BuildContext context, KeyEvent event) {
     if (event is KeyDownEvent) {
       final key = event.logicalKey;
@@ -21,23 +34,23 @@ class KeyboardGameController extends StatelessWidget {
       if (key == LogicalKeyboardKey.arrowUp ||
           key == LogicalKeyboardKey.digit2 ||
           key == LogicalKeyboardKey.numpad2) {
-        gameController.rotate();
+        widget.gameController.rotate();
       } else if (key == LogicalKeyboardKey.arrowDown ||
           key == LogicalKeyboardKey.digit8 ||
           key == LogicalKeyboardKey.numpad8) {
-        gameController.down();
+        widget.gameController.down();
       } else if (key == LogicalKeyboardKey.arrowLeft ||
           key == LogicalKeyboardKey.digit4 ||
           key == LogicalKeyboardKey.numpad4) {
-        gameController.left();
+        widget.gameController.left();
       } else if (key == LogicalKeyboardKey.arrowRight ||
           key == LogicalKeyboardKey.digit6 ||
           key == LogicalKeyboardKey.numpad6) {
-        gameController.right();
+        widget.gameController.right();
       } else if (key == LogicalKeyboardKey.space ||
           key == LogicalKeyboardKey.enter ||
           key == LogicalKeyboardKey.numpadEnter) {
-        gameController.drop();
+        widget.gameController.drop();
       } else {
         return false;
       }
@@ -49,8 +62,8 @@ class KeyboardGameController extends StatelessWidget {
   @override
   Widget build(BuildContext context) => KeyboardListener(
         autofocus: true,
-        focusNode: FocusNode(),
+        focusNode: _focusNode,
         onKeyEvent: (event) => _onKey(context, event),
-        child: child,
+        child: widget.child,
       );
 }
