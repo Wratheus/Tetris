@@ -1,6 +1,6 @@
+import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tetris/feature/game/game_notifier.dart';
 import 'package:tetris/feature/game/widgets/controllers/sensor_controller.dart';
@@ -17,33 +17,17 @@ class GameScreen extends StatelessWidget {
   final GameNotifier gameController;
 
   double _getGridSizeMultiplier(MediaQueryData mediaQuery) {
-    // Для браузера используем более подходящую логику
-    if (kIsWeb) {
-      final width = mediaQuery.size.width;
+    final isLandscape = mediaQuery.size.width > mediaQuery.size.height;
+    final shortestSide = mediaQuery.size.shortestSide;
 
-      // В браузере обычно больше места, поэтому используем более консервативные значения
-      if (width >= 1200) {
-        return 0.2; // Большие экраны
-      } else if (width >= 800) {
-        return 0.25; // Средние экраны
-      } else if (width >= 600) {
-        return 0.4; // Маленькие экраны
-      } else {
-        return 0.5; // Очень маленькие экраны
-      }
-    } else {
-      // Оригинальная логика для мобильных устройств
-      final isLandscape = mediaQuery.size.width > mediaQuery.size.height;
-      final shortestSide = mediaQuery.size.shortestSide;
-
-      if (shortestSide >= 1000) {
-        return isLandscape ? 0.1 : 0.1;
-      } else if (shortestSide >= 600) {
-        return isLandscape ? 0.3 : 0.5;
-      } else {
-        return isLandscape ? 0.25 : 0.6;
-      }
+    // Определяем планшет по размеру экрана
+    if (shortestSide >= 600) {
+      // Планшеты: меньший размер для portrait, чтобы сетка вместилась
+      return isLandscape ? 0.3 : 0.5;
     }
+
+    // Телефоны: стандартные размеры
+    return isLandscape ? 0.25 : 0.6;
   }
 
   @override
@@ -89,7 +73,7 @@ class GameScreen extends StatelessWidget {
                     ],
                   ),
                   // add controller if you do not have a keyboard.
-                  if (!kIsWeb)
+                  if (Platform.isIOS || Platform.isAndroid)
                     SensorGameController(gameController: gameController),
                 ],
               );
