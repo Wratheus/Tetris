@@ -1,6 +1,6 @@
-import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tetris/feature/game/game_notifier.dart';
 import 'package:tetris/feature/game/widgets/controllers/sensor_controller.dart';
@@ -18,6 +18,8 @@ class GameScreen extends StatelessWidget {
   final GameNotifier gameController;
 
   double _getGridSizeMultiplier(MediaQueryData mediaQuery) {
+    if (kIsWeb) return 0.20;
+
     final isLandscape = mediaQuery.size.width > mediaQuery.size.height;
     final shortestSide = mediaQuery.size.shortestSide;
 
@@ -71,7 +73,7 @@ class GameScreen extends StatelessWidget {
                     ],
                   ),
                   // add controller if you do not have a keyboard.
-                  if (Platform.isIOS || Platform.isAndroid)
+                  if (!kIsWeb)
                     SensorGameController(gameController: gameController),
                 ],
               );
