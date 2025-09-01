@@ -1,0 +1,42 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install Flutter
+      shell: bash
+      run: |
+        git clone https://github.com/flutter/flutter.git --branch 3.35.1 --depth 1 $HOME/flutter
+        echo "$HOME/flutter/bin" >> $GITHUB_PATH
+
+    - name: Check Flutter version
+      run: flutter --version
+      shell: bash
+
+    - name: Enable web
+      run: flutter config --enable-web
+      shell: bash
+
+    - name: Install dependencies
+      run: flutter pub get
+
+    - name: Build web
+      run: flutter build web --release --base-href /Tetris/
+
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: github.ref == 'refs/heads/main'
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./build/web
